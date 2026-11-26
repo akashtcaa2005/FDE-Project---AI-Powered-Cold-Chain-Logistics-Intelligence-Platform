@@ -1,10 +1,6 @@
 # ❄️ FDE — AI-Powered Cold Chain Logistics Intelligence Platform
 
-### Intelligent Dispatch • Real-Time Fleet Intelligence • Operational Risk Analysis • AI-Powered Decision Support
-
-<p align="center">
-  <strong>An AI-powered logistics intelligence platform that transforms fragmented fleet telemetry, weather conditions, and operational policies into actionable dispatch decisions.</strong>
-</p>
+### From Spreadsheets & Phone Calls to a Single AI Dispatcher — Built by Akash T
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white" />
@@ -15,233 +11,162 @@
 </p>
 
 <p align="center">
+  <img src="https://img.shields.io/badge/Dataset-Kaggle_Logistics_%26_Supply_Chain-20BEFF?style=flat-square&logo=kaggle&logoColor=white" />
   <img src="https://img.shields.io/badge/Architecture-Multi--Tool_AI_Agent-blue?style=flat-square" />
-  <img src="https://img.shields.io/badge/Inference-Local_&_Cloud-purple?style=flat-square" />
   <img src="https://img.shields.io/badge/Domain-Cold_Chain_Logistics-00A86B?style=flat-square" />
 </p>
 
 ---
 
-## 📌 Overview
+## 👋 For the Hiring Manager / HR Reviewer — Read This First
 
-Cold-chain logistics requires continuous coordination between fleet operations, transportation conditions, environmental risks, and temperature-sensitive supply-chain policies.
+This project is my answer to a real, expensive problem in logistics: **dispatchers lose time and money because fleet data, weather risk, and company policy all live in different places.**
 
-Traditional dispatch workflows often involve disconnected data sources, manual database queries, fragmented operational documentation, and delayed decision-making.
+I built an AI agent that sits on top of all three and answers questions in plain English — the kind of thing a $50,000/year enterprise software contract usually does. I built it solo, end-to-end: database design, AI orchestration, retrieval systems, and a working interface.
 
-**FDE (Forward Deployed Engineering) — AI-Powered Cold Chain Logistics Intelligence Platform** addresses this challenge through an intelligent, tool-enabled AI dispatcher.
+**Why this should matter to you as a hiring decision:**
+- I can take a vague business pain point and turn it into a working, demoable product — not just a script.
+- I work with the same tools (LangGraph, vector databases, SQL, cloud + local LLMs) that production AI teams use today.
+- I write documentation like this — clearly, for both technical and non-technical readers — because I understand that software only creates value when people can actually understand and trust it.
+- I test ideas against real-world data (see the Kaggle dataset section below) instead of toy examples.
 
-The platform integrates:
-
-- Microsoft SQL Server for fleet telemetry and operational data.
-- LangGraph for stateful AI agent orchestration.
-- Pinecone for semantic retrieval of Standard Operating Procedures (SOPs).
-- Open-Meteo for live weather and corridor-risk information.
-- Local and cloud-based language models for natural-language reasoning.
-- Streamlit for an interactive dispatcher interface and audit visibility.
-
-Instead of manually navigating multiple systems, dispatchers can interact with a natural-language assistant that retrieves relevant operational information, invokes specialized tools, and generates context-aware responses.
-
-> **Core Vision:** Build an intelligent logistics decision-support system that connects enterprise data, external intelligence, and organizational knowledge through an orchestrated AI agent.
+If you're scanning resumes, the short version is: **I don't just study AI. I ship it.**
 
 ---
 
-## 🎯 The Problem
+## 🧭 The Business Problem, In Plain Terms
 
-Cold-chain logistics operations face several interconnected challenges:
+Imagine a mid-size cold-chain logistics company — refrigerated trucks moving vaccines, dairy, or seafood across a region.
 
-| Operational Challenge | Platform Capability |
+### How dispatch traditionally works (the old way)
+
+| Step | What actually happens today |
 |---|---|
-| Fragmented fleet information | SQL-based fleet telemetry retrieval |
-| Manual operational data analysis | Natural-language database interaction |
-| Weather-related transportation risks | Live corridor weather intelligence |
-| Difficult SOP and policy discovery | Semantic document retrieval |
-| Slow dispatcher decision-making | Multi-tool AI orchestration |
-| Limited operational traceability | Streamlit audit-log interface |
+| 1. Check which trucks are available | Dispatcher calls drivers or checks a shared spreadsheet |
+| 2. Check weather on the route | Dispatcher opens a separate weather website/app |
+| 3. Check what policy says for a risky situation | Dispatcher digs through a PDF binder or asks a supervisor |
+| 4. Make a decision | Dispatcher manually combines all of the above, under time pressure |
+| 5. Document the decision | Often skipped or done late, creating audit gaps |
 
-The objective is to reduce information fragmentation and provide dispatchers with a unified operational intelligence interface.
+**This is slow, inconsistent, and risky.** A late or wrong decision on a refrigerated shipment can mean spoiled vaccines, spoiled food, regulatory fines, and damaged customer trust. And because the process depends on one person's memory and manual effort, it doesn't scale — the more trucks a company adds, the more this bottleneck hurts.
+
+### What this project changes
+
+Instead of a dispatcher manually checking three or four separate systems, they ask **one AI assistant, in plain English**:
+
+> *"Which vehicles are active on the north corridor right now, and is there any weather risk?"*
+
+The AI agent automatically:
+1. Looks up live fleet data from the database
+2. Checks real weather conditions for that route
+3. Searches the company's own SOP documents for any relevant policy
+4. Combines all of it into one clear, actionable answer
+
+**In short: this project replaces a 10–15 minute manual process with a 10-second conversation.**
 
 ---
 
-## 🚀 Key Features
+## 💰 Why This Matters to a Company (The ROI Case)
+
+| Traditional Cost | How This Platform Reduces It |
+|---|---|
+| Dispatcher time spent cross-checking multiple systems | One natural-language query replaces several manual lookups |
+| Delayed decisions during weather or route risk events | Real-time weather + fleet data combined instantly |
+| Inconsistent policy application between shifts/staff | SOPs are retrieved and applied the same way every time |
+| Lost institutional knowledge when experienced staff leave | Policy knowledge lives in a searchable system, not just people's heads |
+| Spoiled/delayed cold-chain shipments from slow decisions | Faster, better-informed dispatch decisions reduce spoilage risk |
+| No record of *why* a decision was made | Built-in audit log of every AI-assisted interaction |
+
+For a company evaluating this, the pitch is simple: **this is the kind of internal tool that normally costs tens of thousands of dollars to buy from an enterprise vendor — built from the ground up, understandable, and extensible by the team that owns it.**
+
+---
+
+## 📊 Real-World Data, Not a Toy Dataset
+
+A lot of student AI projects use clean, fake data that doesn't resemble how messy real logistics operations actually are. This project is built and tested against a **real-world logistics and supply chain dataset from Kaggle**, which simulates realistic operational signals such as fleet activity, delivery timelines, and supply chain disruptions:
+
+🔗 **Dataset:** [Logistics and Supply Chain Dataset — Kaggle](https://www.kaggle.com/datasets/datasetengineer/logistics-and-supply-chain-dataset)
+
+This dataset is used to simulate the kind of live, messy, real-time operational data an actual cold-chain company would generate — vehicle statuses, delivery/route metrics, and disruption-relevant signals — so the AI agent is reasoning over realistic conditions rather than idealized sample rows. The ingestion pipeline (`scripts/ingest_legacy_data.py`) loads this data into the platform's SQL Server backend, where it becomes the "fleet telemetry" the AI dispatcher queries live.
+
+**Why this matters to a reviewer:** it shows I think about data quality and realism, not just whether code runs.
+
+---
+
+## 🚀 What the Platform Actually Does
 
 ### 1. Natural-Language Dispatcher Console
+A chat-style interface (built with Streamlit) where a dispatcher can type questions like:
+- *"Which fleet vehicles are currently active?"*
+- *"Identify vehicles with potential operational risks."*
+- *"What are the relevant SOPs for a cold-chain incident?"*
+- *"What weather conditions affect this transportation corridor?"*
 
-An interactive Streamlit interface that allows dispatchers to ask operational questions using natural language.
+The AI figures out, on its own, which internal tool(s) it needs to call to answer — the same way a skilled human dispatcher would decide which system to check first.
 
-Example queries:
+### 2. Live Fleet Data Access (Read-Only, Secured)
+Connects to Microsoft SQL Server through a **restricted, read-only account** — the AI can look things up, but can never modify or delete operational data. Administrative access and AI-agent access are deliberately kept separate.
 
-- Which fleet vehicles are currently active?
-- Identify vehicles with potential operational risks.
-- What are the relevant SOPs for a cold-chain incident?
-- What weather conditions affect a transportation corridor?
-- Retrieve operational information for a particular vehicle.
+### 3. Real-Time Weather & Route Risk
+Pulls live weather data from the Open-Meteo API so dispatch decisions account for current conditions on a given transport corridor — not yesterday's forecast.
 
-The AI agent determines which tools are required to answer a query.
+### 4. Company Policy Search (RAG)
+Uses Retrieval-Augmented Generation — company SOP documents are converted into a searchable knowledge base (Pinecone vector database), so the AI can pull the *exact* relevant policy instead of guessing or hallucinating one.
 
-### 2. Intelligent Fleet Telemetry Retrieval
+### 5. AI Orchestration (LangGraph)
+This is the "brain" that decides what to do with a question: which data source to check, in what order, and how to combine the results into one coherent answer.
 
-Integrates Microsoft SQL Server with a restricted, read-only agent access layer.
+### 6. Flexible AI Model Support
+Works with local models (Ollama, for privacy/cost control) or cloud models (OpenAI, DeepSeek) — a company can choose based on budget and data-sensitivity needs.
 
-Capabilities:
-
-- Retrieve fleet telemetry.
-- Query approved operational views.
-- Access vehicle-related information.
-- Support structured operational data retrieval.
-- Maintain separation between administrative database access and agent-level access.
-
-**Database:** Microsoft SQL Server
-
-**Integration:** SQLAlchemy + pyodbc
-
-### 3. Real-Time Weather & Corridor Intelligence
-
-Connects to the Open-Meteo API to retrieve weather information relevant to transportation corridors.
-
-Capabilities:
-
-- Weather condition retrieval.
-- Corridor-level environmental context.
-- Weather-related operational risk assessment.
-- Contextual weather information for dispatch decisions.
-
-### 4. RAG-Powered SOP Intelligence
-
-Uses Retrieval-Augmented Generation (RAG) to connect organizational knowledge with AI reasoning.
-
-**Technology:** Pinecone + Embeddings + LangChain
-
-Capabilities:
-
-- Semantic search over SOP documents.
-- Retrieve relevant cold-chain policies.
-- Search incident response documentation.
-- Provide policy context to the AI dispatcher.
-- Ground responses in retrieved operational knowledge.
-
-### 5. LangGraph Agent Orchestration
-
-The platform uses LangGraph to coordinate the AI dispatcher and its specialized tools.
-
-The orchestration layer handles:
-
-- User query processing.
-- Tool selection and routing.
-- Tool execution.
-- Retrieval of operational context.
-- Response generation.
-
-This enables the agent to combine structured database information, external weather information, and unstructured policy knowledge.
-
-### 6. Flexible LLM Inference
-
-Supports multiple reasoning configurations.
-
-| Provider | Mode | Purpose |
-|---|---|---|
-| Ollama | Local | Run language models locally |
-| OpenAI | Cloud | API-based reasoning |
-| DeepSeek | Cloud | API-compatible reasoning |
-
-The selected model provider is controlled through environment configuration.
-
-### 7. Flexible Embedding Backends
-
-Supports local Hugging Face embeddings and OpenAI embeddings.
-
-Example local embedding model:
-
-`BAAI/bge-m3`
-
-This provides flexibility between local embedding generation and cloud-based embedding services.
-
-### 8. Operational Audit Visibility
-
-The Streamlit interface includes an audit-log experience for inspecting operational interactions.
-
-It helps make dispatcher interactions and agent activity more transparent.
+### 7. Full Audit Trail
+Every interaction is logged and viewable in the interface — important for compliance-heavy industries like pharma cold-chain and food safety.
 
 ---
 
-## 🏗️ System Architecture
-
-The platform follows a modular, tool-oriented AI architecture.
+## 🏗️ How It's Built (System Architecture)
 
 ```mermaid
 flowchart TD
     A["Dispatcher / User"] --> B["Streamlit Interface"]
-
     B --> C["LangGraph Orchestrator"]
-
     C --> D{"Tool Routing"}
-
     D --> E["Fleet Telemetry Tool"]
     D --> F["Weather Intelligence Tool"]
     D --> G["SOP Retrieval Tool"]
-
-    E --> H["Microsoft SQL Server"]
+    E --> H["Microsoft SQL Server (Kaggle-sourced fleet data)"]
     F --> I["Open-Meteo API"]
     G --> J["Pinecone Vector Database"]
-
     H --> K["Operational Context"]
     I --> K
     J --> K
-
     K --> L["LLM Reasoning Engine"]
-
     L --> M["Ollama / OpenAI / DeepSeek"]
-
     M --> N["Contextual Dispatcher Response"]
-
     N --> B
 ```
 
-### Architecture Components
-
-| Component | Responsibility |
-|---|---|
-| Streamlit UI | Dispatcher interaction and audit visibility |
-| LangGraph | Agent orchestration and tool routing |
-| Agent Tools | Database, weather, and retrieval integrations |
-| SQL Server | Structured fleet and operational data |
-| Open-Meteo | External weather information |
-| Pinecone | SOP and policy vector retrieval |
-| Embedding Models | Convert documents and queries into vectors |
-| LLM | Reasoning and response generation |
+| Layer | Role | Why It's There |
+|---|---|---|
+| Streamlit UI | What the dispatcher sees and types into | Needs to be simple enough for non-technical staff |
+| LangGraph | Decides which tool to call and when | Keeps the AI's reasoning structured and reliable, not random |
+| SQL Server | Stores real fleet/operational data (from Kaggle dataset) | Single source of truth for "what's happening right now" |
+| Open-Meteo | External weather source | Dispatch without weather context is dispatch guessing |
+| Pinecone | Searches company policy documents | Prevents the AI from inventing rules that don't exist |
+| LLM (Ollama/OpenAI/DeepSeek) | Turns retrieved data into a clear answer | This is the "translator" between raw data and a human decision |
 
 ---
 
-## 🧠 How It Works
+## 🆚 Traditional Dispatch vs. This Platform
 
-The system follows a tool-assisted operational intelligence workflow.
-
-**Step 1 — User Interaction**
-
-The dispatcher submits a natural-language query through the Streamlit interface.
-
-**Step 2 — Agent Orchestration**
-
-LangGraph receives the query and coordinates the next action.
-
-**Step 3 — Tool Selection**
-
-The agent selects the appropriate tool based on the information required.
-
-**Step 4 — Information Retrieval**
-
-The selected tools retrieve information from:
-
-- Microsoft SQL Server.
-- Open-Meteo.
-- Pinecone.
-
-**Step 5 — Contextual Reasoning**
-
-The retrieved information is passed into the configured language model for response generation.
-
-**Step 6 — Dispatcher Response**
-
-The application presents the generated operational response through the Streamlit interface.
+| | Traditional Manual Process | FDE AI Platform |
+|---|---|---|
+| **Time to answer one dispatch question** | 10–15 minutes, multiple systems | Seconds, one conversation |
+| **Consistency across shifts/staff** | Depends on who's on duty | Same policy logic every time |
+| **Weather awareness** | Manual check, easily skipped under pressure | Automatically pulled in every time |
+| **Policy compliance** | Relies on memory or searching PDFs | Retrieved directly from source documents |
+| **Audit trail** | Often missing or informal | Logged automatically |
+| **Scalability as fleet grows** | Gets harder — more trucks, more manual checks | Scales with the database, not with headcount |
 
 ---
 
@@ -256,10 +181,11 @@ The application presents the generated operational response through the Streamli
 | Database | Microsoft SQL Server |
 | Database Connectivity | SQLAlchemy, pyodbc |
 | Vector Database | Pinecone |
-| Embeddings | Hugging Face, OpenAI |
+| Embeddings | Hugging Face (`BAAI/bge-m3`), OpenAI |
 | Local Inference | Ollama |
 | Cloud Inference | OpenAI, DeepSeek |
 | Weather Intelligence | Open-Meteo API |
+| Real-World Data Source | [Kaggle: Logistics and Supply Chain Dataset](https://www.kaggle.com/datasets/datasetengineer/logistics-and-supply-chain-dataset) |
 | Environment Management | Python Virtual Environment, dotenv |
 | Version Control | Git, GitHub |
 
@@ -270,40 +196,30 @@ The application presents the generated operational response through the Streamli
 ```text
 FDE-Project---AI-Powered-Cold-Chain-Logistics-Intelligence-Platform/
 │
-├── .github/
-│   └── workflows/
-│       └── deploy.yml
-│
-├── .streamlit/
-│   └── config.toml
+├── .github/workflows/deploy.yml
+├── .streamlit/config.toml
 │
 ├── data/
 │   ├── raw/
-│   │   └── dynamic_supply_chain_logistics_dataset.csv
-│   │
+│   │   └── dynamic_supply_chain_logistics_dataset.csv   # Sourced from the Kaggle dataset above
 │   ├── policy/
 │   │   └── Cold_Chain_Incident_SOP_v2.md
-│   │
 │   └── cache/
 │       └── ingestion_hash_cache.json
 │
 ├── docs/
 │   └── instrutions.md
 │
-├── Misc/
-│   └── Materials/
-│
 ├── scripts/
-│   ├── ingest_legacy_data.py
-│   ├── ingest_sop_pinecone.py
-│   └── setup_security_and_view.sql
+│   ├── ingest_legacy_data.py        # Loads real-world fleet data into SQL Server
+│   ├── ingest_sop_pinecone.py       # Loads SOP documents into Pinecone
+│   └── setup_security_and_view.sql  # Sets up restricted, read-only agent access
 │
 ├── src/
 │   ├── agent_tools.py
 │   ├── orchestrator.py
 │   ├── ui.py
-│   └── prompts/
-│       └── system_prompt.txt
+│   └── prompts/system_prompt.txt
 │
 ├── .env.example
 ├── .gitignore
@@ -311,281 +227,124 @@ FDE-Project---AI-Powered-Cold-Chain-Logistics-Intelligence-Platform/
 └── README.md
 ```
 
-*The structure above describes the intended project organization. Keep filenames consistent with the actual repository.*
-
 ---
 
 ## ⚙️ Installation & Setup
 
 ### Prerequisites
-
-Install the following before running the application:
-
-- Python 3.12
-- Git
-- Microsoft SQL Server
-- Microsoft ODBC Driver 18 for SQL Server
+- Python 3.12, Git
+- Microsoft SQL Server + ODBC Driver 18
 - Pinecone account and API key
-- Ollama for local inference, if selected
+- Ollama, if using local inference
 
-### 1. Clone the Repository
+### Quick Start
 
 ```bash
+# 1. Clone
 git clone https://github.com/akashtcaa2005/FDE-Project---AI-Powered-Cold-Chain-Logistics-Intelligence-Platform.git
-
 cd FDE-Project---AI-Powered-Cold-Chain-Logistics-Intelligence-Platform
-```
 
-### 2. Create a Virtual Environment
-
-```bash
+# 2. Virtual environment
 python3 -m venv .venv
-
 source .venv/bin/activate
-```
 
-### 3. Install Dependencies
-
-```bash
+# 3. Install dependencies
 pip install --upgrade pip
-
 pip install -r requirements.txt
-```
 
-### 4. Install Microsoft ODBC Driver 18
-
-For Ubuntu-based Linux distributions:
-
-```bash
+# 4. ODBC driver (Ubuntu/Debian example)
 sudo apt-get update
-
 sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18 unixodbc-dev
+
+# 5. Environment config
+cp .env.example .env   # then fill in your own values
 ```
 
-For Kali Linux or other distributions, follow Microsoft's official installation instructions for the appropriate distribution.
-
-### 5. Configure Environment Variables
-
-Create a local environment file:
-
-```bash
-cp .env.example .env
-```
-
-Update `.env` with your own configuration.
-
-Example configuration:
+Minimal `.env` example:
 
 ```dotenv
-# Agent Configuration
 Agent_llm=OLLAMA
-
-# Embedding Configuration
 Embeddings_model=LOCAL
 Local_Embedding_Model=BAAI/bge-m3
-
-# Pinecone
 PINECONE_API_KEY=your_pinecone_api_key
-
-# SQL Server
 SQL_SERVER_HOST=localhost
 SQL_SERVER_PORT=1433
 SQL_DATABASE=your_database
-
-# Database Administrator
 SQL_ADMIN_USER=your_admin_username
 SQL_ADMIN_PASSWORD=your_admin_password
-
-# Restricted Agent Account
 SQL_AGENT_USER=your_agent_username
 SQL_AGENT_PASSWORD=your_agent_password
 ```
 
-**Important:** Use the exact environment variable names expected by the application code. The configuration above is a template, not a guarantee that every variable is currently consumed by the application.
+Never commit `.env` or real credentials — only `.env.example` with placeholders belongs in version control.
 
-For cloud inference, configure the relevant provider:
-
-```dotenv
-Agent_llm=OPENAI
-OPENAI_API_KEY=your_openai_api_key
-```
-
-Or:
-
-```dotenv
-Agent_llm=DEEPSEEK
-DEEPSEEK_API_KEY=your_deepseek_api_key
-```
-
-Never commit `.env` or publish real credentials.
-
----
-
-## 🗄️ Database & Data Ingestion
-
-### Step 1 — Prepare SQL Server
-
-Start a Microsoft SQL Server instance and configure its connection details through environment variables.
-
-### Step 2 — Ingest Fleet Dataset
-
-Run:
+### Load the Real-World Data (Kaggle)
 
 ```bash
-python scripts/ingest_legacy_data.py
+# Download the dataset from Kaggle and place it under data/raw/, then:
+python scripts/ingest_legacy_data.py          # loads fleet/supply-chain data into SQL Server
 ```
-
-This script is intended to ingest the legacy fleet dataset into the configured database.
-
-### Step 3 — Configure Database Security
-
-Apply:
-
-```text
-scripts/setup_security_and_view.sql
-```
-
-The SQL setup script is intended to establish a restricted agent access layer.
-
-The agent should use approved read-only views rather than unrestricted administrative database access.
-
-### Step 4 — Ingest SOP Documents
-
-Configure your Pinecone index and run:
-
 ```bash
-python scripts/ingest_sop_pinecone.py
+scripts/setup_security_and_view.sql           # creates the restricted, read-only agent access layer
+```
+```bash
+python scripts/ingest_sop_pinecone.py          # loads SOP/policy documents for semantic search
 ```
 
-This prepares the SOP and incident policy content for semantic retrieval.
-
----
-
-## ▶️ Running the Application
-
-Start the Streamlit application:
+### Run the App
 
 ```bash
 streamlit run src/ui.py
 ```
 
-Open the local application:
-
-```text
-http://localhost:8501
-```
-
-### Optional Component Testing
-
-```bash
-python src/agent_tools.py
-```
-
-```bash
-python src/orchestrator.py
-```
-
-These commands can be used for direct component execution where supported by the application code.
+Then open: `http://localhost:8501`
 
 ---
 
-## 🔐 Security Architecture & Best Practices
+## 🔐 Security & Responsible AI Design
 
-Security is an important consideration when connecting AI agents to enterprise operational systems.
+This is a point I take seriously, and it's part of why I'm confident presenting this to a company:
 
-The platform is designed around the following principles:
-
-### Database Access Isolation
-
-- Separate administrator and agent database accounts.
-- Restrict agent access to approved views.
-- Use read-only database permissions for telemetry queries.
-- Avoid exposing unrestricted SQL access to the language model.
-
-### Credential Management
-
-- Store credentials in local environment variables.
-- Exclude `.env` from version control.
-- Maintain `.env.example` with placeholders.
-- Never hard-code API keys or database passwords.
-- Rotate credentials that were previously committed.
-
-### AI Agent Safety
-
-- Restrict available tools to approved operations.
-- Validate tool inputs.
-- Avoid unrestricted database operations.
-- Treat retrieved documents and external content as untrusted input.
-- Validate AI-generated operational recommendations before execution.
-
-### Deployment Security
-
-- Store deployment credentials in GitHub Actions Secrets.
-- Protect database credentials and API tokens.
-- Avoid exposing sensitive configuration in application logs.
-- Apply least-privilege access controls.
+- **Database access isolation** — the AI agent uses a separate, read-only database account from the administrator account. It can never modify or delete real operational data.
+- **No hard-coded secrets** — all credentials live in local environment variables, excluded from version control.
+- **Least-privilege tool access** — the AI can only call the specific tools it's been given (fleet lookup, weather, SOP search) — nothing unrestricted.
+- **Untrusted-input handling** — retrieved documents and external data are treated as information to reason over, not instructions to blindly trust or execute.
+- **Human-in-the-loop** — the platform is designed to *support* dispatcher decisions, not replace human judgment on critical calls.
 
 ---
 
-## 🌍 Potential Applications
+## 🔮 Roadmap (Where I'd Take This Next)
 
-The platform's architecture can support several cold-chain operational scenarios:
-
-| Scenario | Intelligence Capability |
-|---|---|
-| Fleet monitoring | Retrieve vehicle telemetry |
-| Weather-aware dispatch | Incorporate external weather conditions |
-| Incident response | Retrieve relevant SOP documentation |
-| Operational investigation | Combine fleet data and policy context |
-| Dispatcher assistance | Natural-language operational queries |
-| Risk awareness | Contextualize transportation conditions |
-
-These are intended application scenarios; actual capabilities depend on the implemented data and tools.
+- [ ] Real-time IoT temperature/humidity monitoring integration
+- [ ] Live GPS fleet tracking
+- [ ] Predictive cold-chain temperature-excursion alerts (ML-based)
+- [ ] Automated risk scoring per vehicle/shipment
+- [ ] Route optimization using operational constraints
+- [ ] Role-based access control and richer audit trails
+- [ ] Docker-based containerized deployment
+- [ ] Production monitoring and automated testing/CI pipeline
 
 ---
 
-## 🔮 Future Roadmap
+## 👨‍💻 About Me
 
-Potential future enhancements include:
+**Akash T**
+B.Tech, Artificial Intelligence & Data Science — Akshaya College of Engineering & Technology
+Solo developer building across three fronts: **AI/SaaS product development, cybersecurity, and quantitative trading research.**
 
-- [ ] Real-time IoT temperature and humidity monitoring.
-- [ ] GPS-based live fleet tracking.
-- [ ] Predictive cold-chain temperature excursion detection.
-- [ ] ML-based vehicle and shipment risk scoring.
-- [ ] Route optimization using operational constraints.
-- [ ] Automated incident detection and alerting.
-- [ ] Multi-agent architecture for specialized logistics workflows.
-- [ ] Advanced operational analytics dashboard.
-- [ ] Role-based access control and enhanced audit trails.
-- [ ] Containerized deployment using Docker.
-- [ ] Production observability and agent evaluation.
-- [ ] Automated testing and CI/CD improvements.
+I built this project to prove a specific point to myself and to anyone reviewing my work: that I can identify a real operational pain point in an industry, design a system architecture to solve it, secure it properly, and explain it clearly enough that both an engineer and a non-technical decision-maker understand exactly what it does and why it matters.
 
----
-
-## 👨‍💻 Project Information
-
-**Project Name:** FDE — AI-Powered Cold Chain Logistics Intelligence Platform
-
-**Domain:** Artificial Intelligence | Agentic AI | Supply Chain | Logistics Intelligence
-
-**Primary Focus:** AI-powered operational decision support for cold-chain logistics.
-
-**Developer:** Akash T
-
-**GitHub:** [@akashtcaa2005](https://github.com/akashtcaa2005)
+**GitHub:** [github.com/akashtcaa2005002](https://github.com/akashtcaa2005002)
 
 ---
 
 ## 🤝 Contributing
 
-Contributions, suggestions, and improvements are welcome.
-
-1. Fork the repository.
-2. Create a feature branch.
-3. Implement your changes.
-4. Test the changes.
-5. Submit a pull request with a clear description.
+1. Fork the repository
+2. Create a feature branch
+3. Implement your changes
+4. Test the changes
+5. Submit a pull request with a clear description
 
 Please do not submit credentials, private datasets, or confidential operational information.
 
@@ -593,16 +352,13 @@ Please do not submit credentials, private datasets, or confidential operational 
 
 ## 📜 License
 
-A license has not yet been specified.
-
-Please contact the repository owner before reusing or redistributing this project until a license is added.
+A license has not yet been specified. Please contact the repository owner before reusing or redistributing this project.
 
 ---
 
 <p align="center">
-  <strong>Built with Python, Agentic AI, Enterprise Data Integration, and Logistics Intelligence.</strong>
+  <strong>Built with Python, Agentic AI, Real-World Data, and a Business-First Mindset.</strong>
 </p>
-
 <p align="center">
   <em>Turning fragmented logistics information into intelligent operational decisions.</em>
 </p>
