@@ -6,7 +6,7 @@ on:
       environment:
         description: 'Target Environment'
         required: true
-        default: 'FDE-Cold'
+        default: 'FDE-YT-Cold'
 
 jobs:
   deploy:

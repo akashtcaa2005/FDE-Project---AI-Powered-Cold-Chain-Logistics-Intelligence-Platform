@@ -1,7 +1,6 @@
 -- ====================================================================
 -- FDE ENTERPRISE SECURITY & SEMANTIC LAYER SCRIPT
 -- Purpose: Protect the legacy DB from LLM hallucinations and mutations
--- Run with SQLCMD mode and set SQL_AGENT_PASSWORD before execution.
 -- ====================================================================
 
 -- 1. Create a dedicated schema for our clean AI views
@@ -24,7 +23,7 @@ FROM dbo.TBL_SC_FLEET_HIST_RAW;
 GO
 
 -- 3. Create a strict Read-Only Login and User for the AI Agent
-CREATE LOGIN USR_FDE_RO WITH PASSWORD = '$(SQL_AGENT_PASSWORD)';
+CREATE LOGIN USR_FDE_RO WITH PASSWORD = 'AgentPassword2026!';
 CREATE USER USR_FDE_RO FOR LOGIN USR_FDE_RO;
 GO
 
@@ -35,4 +34,4 @@ DENY INSERT, UPDATE, DELETE, ALTER ON SCHEMA::dbo TO USR_FDE_RO;
 GO
 
 -- # About line 33 :
--- ON SCHEMA::dbo: The dbo (Database Owner) schema is the default folder security boundary.
+-- ON SCHEMA::dbo: The dbo (Database Owner) schema is the default folder structure where your python ingestion script just dumped the TBL_SC_FLEET_HIST_RAW table. This target applies the rules to every single table or view currently inside dbo, or any tables you might add there in the future.
