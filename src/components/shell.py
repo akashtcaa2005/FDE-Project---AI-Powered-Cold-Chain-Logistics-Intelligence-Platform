@@ -44,7 +44,8 @@ def init_session_state() -> None:
         }
 
     st.session_state.setdefault("active_profile_key", "fresh_perishables")
-    st.session_state.setdefault("llm_provider", os.getenv("Agent_llm", "OLLAMA").strip().upper())
+    default_provider = os.getenv("Agent_llm", "GROQ" if os.getenv("GROQ_API_KEY") else "OLLAMA").strip().upper()
+    st.session_state.setdefault("llm_provider", default_provider)
     default_model_map = {
         "GROQ": os.getenv("GROQ_MODEL", "openai/gpt-oss-120b").strip(),
         "GEMINI": os.getenv("GEMINI_MODEL", "gemini-3.8-flash").strip(),

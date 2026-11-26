@@ -52,7 +52,8 @@ def load_system_prompt() -> str:
 
 def create_llm(provider: str | None = None, model_name: str | None = None):
     """Instantiate the configured LangChain chat model for tool calling."""
-    active_provider = (provider or os.getenv("Agent_llm", "OLLAMA")).strip().upper()
+    fallback_provider = "GROQ" if os.getenv("GROQ_API_KEY") else "OLLAMA"
+    active_provider = (provider or os.getenv("Agent_llm", fallback_provider)).strip().upper()
 
     if active_provider == "OPENAI":
         from langchain_openai import ChatOpenAI
@@ -141,7 +142,7 @@ def build_fde_agent(provider: str | None = None, model_name: str | None = None):
 
 
 # Default module-level compiled agent (preserves existing imports across codebase)
-AGENT_LLM_SETTING = os.getenv("Agent_llm", "OLLAMA").strip().upper()
+AGENT_LLM_SETTING = os.getenv("Agent_llm", "GROQ" if os.getenv("GROQ_API_KEY") else "OLLAMA").strip().upper()
 try:
     fde_agent = build_fde_agent()
 except Exception:

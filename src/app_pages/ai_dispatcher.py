@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import uuid
 from datetime import datetime
 from typing import Any
@@ -70,6 +71,95 @@ def _render_traces(traces: list[dict[str, Any]]) -> None:
                 st.code(trace["content"], language="text")
 
 
+def _stream_agent_turn(
+    provider: str,
+    model_name: str,
+    user_prompt: str,
+    conv_id: str,
+    status: Any,
+    current_traces: list[dict[str, Any]],
+) -> str:
+    """Stream one LangGraph execution for the given provider/model and return final response text."""
+    agent = _get_cached_agent(provider, model_name)
+    thread_config = {"configurable": {"thread_id": conv_id}}
+    final_response = ""
+
+    events = agent.stream(
+        {"messages": [HumanMessage(content=user_prompt)]},
+        config=thread_config,
+        stream_mode="updates",
+    )
+
+    for event in events:
+        for node_name, node_state in event.items():
+            if node_name == "reasoner":
+                latest_msg = node_state["messages"][-1]
+                if hasattr(latest_msg, "tool_calls") and latest_msg.tool_calls:
+                    status.update(label="Selecting & parameterizing operational tools...")
+                    for tc in latest_msg.tool_calls:
+                        st.markdown(f":material/bolt: Invoking `{tc['name']}`")
+                        args_json = json.dumps(tc.get("args", {}), default=str)
+                        current_traces.append(
+                            {"type": "tool_input", "name": tc["name"], "args": tc.get("args", {})}
+                        )
+                        write_audit_event(
+                            session_id=conv_id,
+                            node_name="reasoner",
+                            tool_name=tc["name"],
+                            content=args_json,
+                            status="SUCCESS",
+                            input_summary=args_json,
+                        )
+
+                if getattr(latest_msg, "content", None):
+                    content_val = latest_msg.content
+                    if isinstance(content_val, list):
+                        content_val = "\n".join(
+                            str(item.get("text", item)) if isinstance(item, dict) else str(item)
+                            for item in content_val
+                        )
+                    final_response = str(content_val)
+                    status.update(label="Synthesizing grounded operational response...")
+                    write_audit_event(
+                        session_id=conv_id,
+                        node_name="reasoner_final",
+                        tool_name=f"LLM ({provider}/{model_name})",
+                        content=final_response,
+                        status="SUCCESS",
+                        input_summary=user_prompt,
+                        output_summary=final_response,
+                    )
+
+            elif node_name == "tools":
+                status.update(label="Retrieving live telemetry, weather, and SOP evidence...")
+                for msg in node_state.get("messages", []):
+                    if isinstance(msg, ToolMessage):
+                        msg_text = str(msg.content)
+                        is_err = any(
+                            tok in msg_text
+                            for tok in ("SECURITY BLOCK", "Database Error", "Failure", "Error:")
+                        )
+                        current_traces.append(
+                            {"type": "tool_output", "name": msg.name, "content": msg_text}
+                        )
+                        write_audit_event(
+                            session_id=conv_id,
+                            node_name="tools",
+                            tool_name=msg.name or "unknown_tool",
+                            content=msg_text,
+                            status="BLOCKED_OR_ERROR" if is_err else "SUCCESS",
+                            output_summary=msg_text,
+                            error_info=msg_text if is_err else "",
+                        )
+    return final_response
+
+
+def _is_quota_error(error_text: str) -> bool:
+    """Return True if an LLM exception looks like a rate-limit or quota exhaustion error."""
+    lowered = error_text.lower()
+    return any(tok in lowered for tok in ("429", "resource_exhausted", "quota", "rate limit", "rate-limit"))
+
+
 def _run_dispatcher_turn(user_prompt: str, conv_id: str) -> None:
     """Execute one LangGraph agent turn with streaming status updates and audit persistence."""
     convs = st.session_state.conversations
@@ -81,100 +171,60 @@ def _run_dispatcher_turn(user_prompt: str, conv_id: str) -> None:
     with st.chat_message("user", avatar=":material/person:"):
         st.markdown(user_prompt)
 
-    provider = st.session_state.get("llm_provider", "OLLAMA")
-    model_name = st.session_state.get("llm_model", "qwen2.5:7b")
+    provider = st.session_state.get("llm_provider", "GROQ" if os.getenv("GROQ_API_KEY") else "OLLAMA")
+    model_name = st.session_state.get("llm_model", "openai/gpt-oss-120b")
 
     with st.chat_message("assistant", avatar=":material/smart_toy:"):
         final_response = ""
         current_traces: list[dict[str, Any]] = []
         error_text = ""
+        fallback_notice = ""
 
         with st.status("Initializing FDE LangGraph Reasoner...", expanded=True) as status:
             try:
-                agent = _get_cached_agent(provider, model_name)
-                thread_config = {"configurable": {"thread_id": conv_id}}
-
-                events = agent.stream(
-                    {"messages": [HumanMessage(content=user_prompt)]},
-                    config=thread_config,
-                    stream_mode="updates",
+                final_response = _stream_agent_turn(
+                    provider, model_name, user_prompt, conv_id, status, current_traces
                 )
-
-                for event in events:
-                    for node_name, node_state in event.items():
-                        if node_name == "reasoner":
-                            latest_msg = node_state["messages"][-1]
-                            if hasattr(latest_msg, "tool_calls") and latest_msg.tool_calls:
-                                status.update(label="Selecting & parameterizing operational tools...")
-                                for tc in latest_msg.tool_calls:
-                                    st.markdown(f":material/bolt: Invoking `{tc['name']}`")
-                                    args_json = json.dumps(tc.get("args", {}), default=str)
-                                    current_traces.append(
-                                        {"type": "tool_input", "name": tc["name"], "args": tc.get("args", {})}
-                                    )
-                                    write_audit_event(
-                                        session_id=conv_id,
-                                        node_name="reasoner",
-                                        tool_name=tc["name"],
-                                        content=args_json,
-                                        status="SUCCESS",
-                                        input_summary=args_json,
-                                    )
-
-                            if getattr(latest_msg, "content", None):
-                                content_val = latest_msg.content
-                                if isinstance(content_val, list):
-                                    content_val = "\n".join(
-                                        str(item.get("text", item)) if isinstance(item, dict) else str(item)
-                                        for item in content_val
-                                    )
-                                final_response = str(content_val)
-                                status.update(label="Synthesizing grounded operational response...")
-                                write_audit_event(
-                                    session_id=conv_id,
-                                    node_name="reasoner_final",
-                                    tool_name=f"LLM ({provider}/{model_name})",
-                                    content=final_response,
-                                    status="SUCCESS",
-                                    input_summary=user_prompt,
-                                    output_summary=final_response,
-                                )
-
-                        elif node_name == "tools":
-                            status.update(label="Retrieving live telemetry, weather, and SOP evidence...")
-                            for msg in node_state.get("messages", []):
-                                if isinstance(msg, ToolMessage):
-                                    msg_text = str(msg.content)
-                                    is_err = any(
-                                        tok in msg_text
-                                        for tok in ("SECURITY BLOCK", "Database Error", "Failure", "Error:")
-                                    )
-                                    current_traces.append(
-                                        {"type": "tool_output", "name": msg.name, "content": msg_text}
-                                    )
-                                    write_audit_event(
-                                        session_id=conv_id,
-                                        node_name="tools",
-                                        tool_name=msg.name or "unknown_tool",
-                                        content=msg_text,
-                                        status="BLOCKED_OR_ERROR" if is_err else "SUCCESS",
-                                        output_summary=msg_text,
-                                        error_info=msg_text if is_err else "",
-                                    )
-
                 status.update(label="Operational analysis complete", state="complete", expanded=False)
             except Exception as exc:
                 error_text = str(exc)
-                status.update(label="Agent execution encountered an error", state="error", expanded=True)
-                write_audit_event(
-                    session_id=conv_id,
-                    node_name="reasoner_error",
-                    tool_name=f"LLM ({provider}/{model_name})",
-                    content=error_text,
-                    status="ERROR",
-                    input_summary=user_prompt,
-                    error_info=error_text,
-                )
+                # Automatic fallback to Groq when another provider hits a 429/quota limit
+                if (
+                    provider != "GROQ"
+                    and _is_quota_error(error_text)
+                    and os.getenv("GROQ_API_KEY", "").strip()
+                ):
+                    groq_model = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b").strip()
+                    status.update(label=f"{provider} quota reached — switching to Groq ({groq_model})...")
+                    try:
+                        current_traces.clear()
+                        final_response = _stream_agent_turn(
+                            "GROQ", groq_model, user_prompt, conv_id, status, current_traces
+                        )
+                        st.session_state.llm_provider = "GROQ"
+                        st.session_state.llm_model = groq_model
+                        fallback_notice = f"Switched automatically from `{provider}` (quota exceeded) to `GROQ / {groq_model}`."
+                        provider, model_name = "GROQ", groq_model
+                        error_text = ""
+                        status.update(label="Operational analysis complete", state="complete", expanded=False)
+                    except Exception as groq_exc:
+                        error_text = str(groq_exc)
+                        provider, model_name = "GROQ", groq_model
+
+                if error_text:
+                    status.update(label="Agent execution encountered an error", state="error", expanded=True)
+                    write_audit_event(
+                        session_id=conv_id,
+                        node_name="reasoner_error",
+                        tool_name=f"LLM ({provider}/{model_name})",
+                        content=error_text,
+                        status="ERROR",
+                        input_summary=user_prompt,
+                        error_info=error_text,
+                    )
+
+        if fallback_notice:
+            st.info(fallback_notice, icon=":material/swap_horiz:")
 
         if error_text:
             st.error(
