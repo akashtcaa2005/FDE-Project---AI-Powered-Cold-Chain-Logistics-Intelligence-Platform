@@ -73,8 +73,17 @@ The central question this project is built around:
 
 India's post-harvest and cold-chain sector faces large, well-documented losses. According to FICCI–Grant Thornton research, as reported by Business Standard on 5 October 2026:
 
-- Estimated annual post-harvest losses across 54 crops and commodities are around **₹1.5 trillion**.
-- Estimated annual food losses across horticulture, dairy, meat, poultry and fish are **17–47 million tonnes**.
+<div align="center">
+
+### 🚨 THE SCALE OF INDIA'S POST-HARVEST FOOD LOSSES
+
+# **₹1.5 TRILLION**
+### Estimated annual post-harvest losses across 54 crops and commodities
+
+# **17–47 MILLION TONNES**
+### Estimated annual food losses across horticulture, dairy, meat, poultry and fish
+
+</div>
 - Key gaps include farm-level packhouses, pre-cooling, refrigerated vehicles, and supply-chain traceability.
 
 Source: [Business Standard, 5 Oct 2026](https://www.business-standard.com/industry/news/india-nears-cold-storage-goal-but-first-mile-gaps-remain-ficci-gt-bharat-126100500471_1.html)
