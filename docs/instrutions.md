@@ -6,22 +6,22 @@
 - Create and EC2 instance > docker container > mcr.microsoft.com/mssql/server:2022-latest
 - Spin up the Legacy MSSQL Server
 ```
-docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=FdeEnterprisePass123!" -p 1433:1433 --name legacy-mssql -d mcr.microsoft.com/mssql/server:2022-latest
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=<YOUR_ROTATED_MSSQL_SA_PASSWORD>" -p 1433:1433 --name legacy-mssql -d mcr.microsoft.com/mssql/server:2022-latest
 
 # or multi-line in windows 
-docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=FdeEnterprisePass123!" ^
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=<YOUR_ROTATED_MSSQL_SA_PASSWORD>" ^
    -p 1433:1433 --name legacy-mssql ^
    -d mcr.microsoft.com/mssql/server:2022-latest
 
 # or multi-line unix
-docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=FdeEnterprisePass123!" \
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=<YOUR_ROTATED_MSSQL_SA_PASSWORD>" \
    -p 1433:1433 --name legacy-mssql \
    -d mcr.microsoft.com/mssql/server:2022-latest
 
 # or multi-line with volume inside EC2
 docker run -v mssql_data:/var/opt/mssql \
   -e "ACCEPT_EULA=Y" \
-  -e "MSSQL_SA_PASSWORD=FdeEnterprisePass123!" \
+  -e "MSSQL_SA_PASSWORD=<YOUR_ROTATED_MSSQL_SA_PASSWORD>" \
   -p 1433:1433 \
   --name legacy-mssql \
   -d mcr.microsoft.com/mssql/server:2022-latest
@@ -47,7 +47,7 @@ We need to query the database
    Trust server certificate: 🟩 Check this box / turn it ON (Crucial for Docker)
    Authentication type*: SQL Login
    User name*: sa
-   Password*: FdeEnterprisePass123!
+   Password*: <YOUR_ROTATED_MSSQL_SA_PASSWORD>
    Save Password: 🟩 Check this box
    Database name: Type master (or leave it on "Select a database")
    Encrypt: ⚠️ Change this from Mandatory to Optional (or False)
@@ -69,7 +69,7 @@ We need to query the database
 ```
 docker run -v mssql_data:/var/opt/mssql \
   -e "ACCEPT_EULA=Y" \
-  -e "MSSQL_SA_PASSWORD=FdeEnterprisePass123!" \
+  -e "MSSQL_SA_PASSWORD=<YOUR_ROTATED_MSSQL_SA_PASSWORD>" \
   -p 1433:1433 \
   --name legacy-mssql \
   -d mcr.microsoft.com/mssql/server:2022-latest
@@ -100,7 +100,7 @@ docker run -v mssql_data:/var/opt/mssql \
 * Trust server certificate: 🟩 Check this box / Turn it ON
 * Authentication type*: SQL Login
 * User name*: USR_FDE_RO
-* Password*: AgentPassword2026!
+* Password*: <YOUR_ROTATED_AGENT_PASSWORD>
 * Save Password: 🟩 Check this box / Turn it ON
 * Database name: Type master (or click "Select a database" and select master)
 * Encrypt: Change this from Mandatory to Optional (or False)
