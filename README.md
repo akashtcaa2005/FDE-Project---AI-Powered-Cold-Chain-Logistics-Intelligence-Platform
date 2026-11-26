@@ -594,4 +594,4 @@ A Forward Deployed Engineer is embedded with a customer, understands the operati
 
 FDE Intelligence is an operational decision-support tool. Risk scores, briefings and recommendations are advisory and must be reviewed by a qualified person before any action is taken. It does not replace regulatory compliance processes, cold-chain certification, or professional logistics judgment.
 
-**License:** not yet specified. Add a `LICENSE` file (for example MIT or Apache-2.0) before wider distribution.
+**License:** AKASH T.
