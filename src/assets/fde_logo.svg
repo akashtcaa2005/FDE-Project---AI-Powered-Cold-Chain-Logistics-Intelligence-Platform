@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 48" fill="none">
+  <rect x="2" y="4" width="40" height="40" rx="10" fill="#0E223B" stroke="#38BDF8" stroke-width="1.5"/>
+  <path d="M22 11V37M11 17.5L33 30.5M33 17.5L11 30.5" stroke="#38BDF8" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="22" cy="24" r="4" fill="#07111F" stroke="#7DD3FC" stroke-width="2"/>
+  <text x="54" y="23" fill="#F8FAFC" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="700" letter-spacing="0.4">FDE INTELLIGENCE</text>
+  <text x="54" y="38" fill="#38BDF8" font-family="Inter, system-ui, sans-serif" font-size="10.5" font-weight="600" letter-spacing="1.4">COLD CHAIN COMMAND</text>
+</svg>

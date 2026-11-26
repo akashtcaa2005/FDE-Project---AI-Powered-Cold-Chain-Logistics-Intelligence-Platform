@@ -1,2 +1,51 @@
 [server]
 fileWatcherType = "none"
+headless = true
+
+[theme]
+base = "dark"
+primaryColor = "#0EA5E9"
+backgroundColor = "#07111F"
+secondaryBackgroundColor = "#0E1A2B"
+textColor = "#E2E8F0"
+linkColor = "#38BDF8"
+codeBackgroundColor = "#0B1525"
+codeTextColor = "#7DD3FC"
+borderColor = "#1E2E46"
+dataframeBorderColor = "#1E2E46"
+dataframeHeaderBackgroundColor = "#111F33"
+
+font = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+headingFont = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap"
+codeFont = "'JetBrains Mono':https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
+
+baseFontSize = 14
+baseFontWeight = 400
+codeFontSize = "13px"
+headingFontSizes = ["28px", "22px", "18px", "15px", "14px", "12px"]
+headingFontWeights = [700, 600, 600, 600, 500, 500]
+linkUnderline = false
+
+baseRadius = "8px"
+buttonRadius = "8px"
+showWidgetBorder = true
+showSidebarBorder = true
+
+redColor = "#FB7185"
+orangeColor = "#F59E0B"
+yellowColor = "#FBBF24"
+greenColor = "#34D399"
+blueColor = "#38BDF8"
+violetColor = "#818CF8"
+grayColor = "#94A3B8"
+
+chartCategoricalColors = ["#38BDF8", "#34D399", "#FBBF24", "#FB7185", "#818CF8", "#2DD4BF", "#94A3B8"]
+chartSequentialColors = ["#0B192C", "#0E294B", "#103B6B", "#0E528D", "#0B6CB2", "#0284C7", "#0EA5E9", "#38BDF8", "#7DD3FC", "#BAE6FD"]
+
+[theme.sidebar]
+backgroundColor = "#050C17"
+secondaryBackgroundColor = "#0C1829"
+codeBackgroundColor = "#0B1525"
+textColor = "#CBD5E1"
+borderColor = "#18273D"
+primaryColor = "#38BDF8"
