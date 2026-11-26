@@ -259,12 +259,23 @@ st.info(
 active_conv_id = st.session_state.thread_id
 active_messages = st.session_state.conversations[active_conv_id]["messages"]
 
+def _prefill_from_pill() -> None:
+    """Populate the chat input with the clicked Suggested Dispatch Inquiry."""
+    chosen = st.session_state.get("dispatcher_pills")
+    if chosen:
+        st.session_state["dispatcher_chat_input"] = chosen
+        st.session_state["dispatcher_pills"] = None
+
+
 if not active_messages:
     st.markdown("##### Suggested Dispatch Inquiries")
-    chosen = st.pills("Quick prompts", SUGGESTED_PROMPTS, label_visibility="collapsed", key="dispatcher_pills")
-    if chosen:
-        st.session_state.pending_dispatcher_prompt = chosen
-        st.rerun()
+    st.pills(
+        "Quick prompts",
+        SUGGESTED_PROMPTS,
+        label_visibility="collapsed",
+        key="dispatcher_pills",
+        on_change=_prefill_from_pill,
+    )
 
 for msg_idx, entry in enumerate(active_messages):
     avatar = ":material/person:" if entry["role"] == "user" else ":material/smart_toy:"
@@ -285,10 +296,11 @@ for msg_idx, entry in enumerate(active_messages):
                 with st.popover("Copy Raw Text", icon=":material/content_copy:"):
                     st.code(entry["content"], language="markdown")
 
-# Handle pending prompt from Overview/Live Fleet/Pills OR direct chat input
+# Handle pending prompt from Overview/Live Fleet OR direct chat input
 queued = st.session_state.pop("pending_dispatcher_prompt", None)
 user_text = st.chat_input(
     "Ask FDE AI Dispatcher about high-risk vehicles, corridor weather, delays, or SOP mitigations...",
+    key="dispatcher_chat_input",
     submit_mode="disable",
 )
 
