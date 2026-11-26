@@ -103,7 +103,10 @@ def create_llm(provider: str | None = None, model_name: str | None = None):
             max_retries=2,
         )
 
-    from langchain_community.chat_models import ChatOllama
+    try:
+        from langchain_community.chat_models import ChatOllama
+    except ImportError:
+        from langchain_ollama import ChatOllama  # type: ignore[no-redef]
 
     return ChatOllama(
         model=model_name or os.getenv("OLLAMA_MODEL", "qwen2.5:7b"),
@@ -139,7 +142,11 @@ def build_fde_agent(provider: str | None = None, model_name: str | None = None):
 
 # Default module-level compiled agent (preserves existing imports across codebase)
 AGENT_LLM_SETTING = os.getenv("Agent_llm", "OLLAMA").strip().upper()
-fde_agent = build_fde_agent()
+try:
+    fde_agent = build_fde_agent()
+except Exception:
+    # Deferred build — the AI Dispatcher page will call build_fde_agent() on demand
+    fde_agent = None  # type: ignore[assignment]
 
 
 if __name__ == "__main__":
